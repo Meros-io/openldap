@@ -1,6 +1,6 @@
 FROM centos:centos7
 
-# OpenLDAP server image for OpenShift Origin
+# OpenLDAP server image for DeployDock
 #
 # Volumes:
 # * /var/lib/ldap/data - Datastore for OpenLDAP
@@ -13,13 +13,13 @@ MAINTAINER Steve Kuznetsov <skuznets@redhat.com>
 
 LABEL io.k8s.description="OpenLDAP is an open source implementation of the Lightweight Directory Access Protocol." \
       io.k8s.display-name="OpenLDAP 2.4.41" \
-      io.openshift.expose-services="389:ldap,636:ldaps" \
-      io.openshift.tags="directory,ldap,openldap,openldap2441" \
-      io.openshift.non-scalable="true"
+      io.deploydock.expose-services="389:ldap,636:ldaps" \
+      io.deploydock.tags="directory,ldap,openldap,openldap2441" \
+      io.deploydock.non-scalable="true"
 
 # Add defaults for config
-COPY ./contrib/config /opt/openshift/config
-COPY ./contrib/lib /opt/openshift/lib
+COPY ./contrib/config /opt/deploydock/config
+COPY ./contrib/lib /opt/deploydock/lib
 # Add startup scripts
 COPY run-*.sh /usr/local/bin/
 COPY contrib/*.ldif /usr/local/etc/openldap/
@@ -35,7 +35,7 @@ RUN yum install -y openldap openldap-servers openldap-clients && \
     chmod a+rwx -R /etc/openldap && \
     mkdir -p /var/run/openldap && \
     chmod a+rwx -R /var/run/openldap && \
-    chmod -R a+rw /opt/openshift 
+    chmod -R a+rw /opt/deploydock 
 
 # Set OpenLDAP data and config directories in a data volume
 VOLUME ["/var/lib/ldap", "/etc/openldap"]

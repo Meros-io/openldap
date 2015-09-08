@@ -81,14 +81,14 @@ if [ ! -f /etc/openldap/CONFIGURED ]; then
         fi
     else
         # We are not root, we need to populate from the default blind-mount source 
-        if [ -f /opt/openshift/config/slapd.d/cn\=config/olcDatabase\=\{0\}config.ldif ]
+        if [ -f /opt/deploydock/config/slapd.d/cn\=config/olcDatabase\=\{0\}config.ldif ]
         then
             # Use provided default config, get rid of current data
             rm -rf /var/lib/ldap/*
             rm -rf /etc/openldap/*
             # Bring in associated default database files
-            mv -f /opt/openshift/lib/* /var/lib/ldap
-            mv -f /opt/openshift/config/* /etc/openldap
+            mv -f /opt/deploydock/lib/* /var/lib/ldap
+            mv -f /opt/deploydock/config/* /etc/openldap
         else
             # Something has gone wrong with our image build
             echo "FAILURE: Default configuration files from /contrib/ are not present in the image at /opt/oepnshift."
@@ -104,7 +104,7 @@ if [ ! -f /etc/openldap/CONFIGURED ]; then
         echo "The file ${err} has a checksum error. Ensure that this file is not edited manually, or re-calculate the checksum."
     done
 
-    rm -rf /opt/openshift/*
+    rm -rf /opt/deploydock/*
 
     touch /etc/openldap/CONFIGURED
 fi

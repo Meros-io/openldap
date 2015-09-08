@@ -1,16 +1,16 @@
-OpenLDAP for OpenShift - Docker images
+OpenLDAP for DeployDock - Docker images
 ========================================
-DISCLAIMER - IMAGES ONLY FOR INTERNAL TESTING OF ORIGIN REPOSITORY
+DISCLAIMER - IMAGES ONLY FOR INTERNAL TESTING OF DEPLOYDOCK REPOSITORY
 ==================================================================
 
-This repository contains Dockerfiles for OpenLDAP images for OpenShift testing.
+This repository contains Dockerfiles for OpenLDAP images for DeployDock testing.
 Images are based on CentOS. Images are **NOT** meant to be used for LDAP servers in
-any environment other than the OpenShift Origin test environment at this time. No
+any environment other than the DeployDock test environment at this time. No
 guarantees are given for the efficacy or stability of images in this repository or
 those created with Dockerfiles from this repository.
 
 If you are working on developing this image, refer to [the hacking document](HACKING.md) 
-for detailed discussion of deploying OpenLDAP as a Docker container under OpenShift.
+for detailed discussion of deploying OpenLDAP as a Docker container under DeployDock.
 
 
 Versions
@@ -27,7 +27,7 @@ Installation
 To build an OpenLDAP image from scratch run:
 
 ```
-$ git clone https://github.com/openshift/openldap.git
+$ git clone https://github.com/Meros-io/openldap.git
 $ cd openldap
 $ make build
 ```
@@ -82,14 +82,14 @@ If you want to set only the mandatory environment variables and not store
 the LDAP directory in a host directory, execute the following command:
 
 ```
-$ docker run -d --name openldap_server -p 389:389 -p 636:636 openshift/openldap-2441-centos7:latest
+$ docker run -d --name openldap_server -p 389:389 -p 636:636 deploydock/openldap-2441-centos7:latest
 ```
 
 This will create a container named `openldap_server` running OpenLDAP with an admin
 user with credentials `cn=Manager,dc=example,dc=com:admin`. Ports 389 and 636 will be exposed and mapped
 to the host for `ldap` and `ldaps` endpoints, respectively. If you want your directory to be persistent 
 across container executions, also add a `-v /host/data/path:/var/lib/ldap` argument to specify
-the OpenLDAP data files, and a `-v /host/config/path:/etc/openshift` argument to specify OpenLDAP
+the OpenLDAP data files, and a `-v /host/config/path:/etc/deploydock` argument to specify OpenLDAP
 configuration files. Ensure that a file named `CONFIGURED` exists in the directory you are mounting to `/etc/openldap`
 so that the startup scripts do not try to re-configure slapd.
 

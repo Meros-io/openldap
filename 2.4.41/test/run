@@ -9,7 +9,7 @@
 set -exo nounset
 shopt -s nullglob
 
-IMAGE_NAME=${IMAGE_NAME:-openshift/openldap-2441-centos7-candidate}
+IMAGE_NAME=${IMAGE_NAME:-deploydock/openldap-2441-centos7-candidate}
 
 CIDFILE_DIR=$(mktemp --suffix=openldap_test_cidfiles -d)
 

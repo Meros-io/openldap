@@ -1,10 +1,10 @@
 # Development Reference 
 
 ## Purpose
-The purpose of this document is to provide a clear and reference-filled document for developers that want to work with the OpenShift OpenLDAP Docker image. The creation of this image brought many issues to light and was not straightforward. Decisions were made to mitigate these issues and the description of those decisions follows.
+The purpose of this document is to provide a clear and reference-filled document for developers that want to work with the DeployDock OpenLDAP Docker image. The creation of this image brought many issues to light and was not straightforward. Decisions were made to mitigate these issues and the description of those decisions follows.
 
 ## Development Considerations
-This image was originally created in order to facilitate testing of the OpenShift LDAP group sync feature. However, during creation it was clear that it would not be difficult to build the test image as a layer or layers on top of a general-purpose OpenLDAP image for use by developers in OpenShift. Therefore, the following characteristics were desriable from the image: 
+This image was originally created in order to facilitate testing of the DeployDock LDAP group sync feature. However, during creation it was clear that it would not be difficult to build the test image as a layer or layers on top of a general-purpose OpenLDAP image for use by developers in DeployDock. Therefore, the following characteristics were desriable from the image: 
 
 * random UID for the user in the running container
 * user-settable attributes for OpenLDAP setup at run-time
@@ -36,6 +36,6 @@ OpenLDAP exposes administrative tools like [`slapadd`](http://www.openldap.org/s
 This approach does not seem to work, however. If there are no traces of the new `cn=config` configuration schema in the `etc/openldap` directory, the `slapadd` command looks for the old `slapd.conf` configuration schema and fails because that schema is deprecated. `slapadd` also cannot be used while the daemon is off to edit records as it is only capable of adding objects. Therefore, a partial edit using `slapadd` is not possible. Furthermore, editing the files by hand will trigger checksum errors and cause a corrupt installation.
 
 ### OpenLDAP Blind-Mount of Files
-The final and ugliest option is the blindly mount files to `etc/openldap` and `var/lib/ldap`. The process for this is very similar to that using `slapcat` and `slapadd` above. A working LDAP server has every single file in it's `etc/openldap` and `var/lib/ldap` directories copied and placed into the surrogate LDAP server you are trying to set up. The new server, when the daemon is run, will complain about the databases not being closed correctly but it is able tor recover and no errors result. The files in the [`contrib`](2.4.41/contrib) subdirectories ([`lib`](2.4.41/contrib/lib), [`config`](2.4.41/contrib/config)) are the result of this operation. These files can be re-created at any time by running the `openshift/openldap-2441-centos7` image as `UID 0` and harvesting the resulting files in the container's `etc/openldap` and `var/lib/ldap` directories.
+The final and ugliest option is the blindly mount files to `etc/openldap` and `var/lib/ldap`. The process for this is very similar to that using `slapcat` and `slapadd` above. A working LDAP server has every single file in it's `etc/openldap` and `var/lib/ldap` directories copied and placed into the surrogate LDAP server you are trying to set up. The new server, when the daemon is run, will complain about the databases not being closed correctly but it is able tor recover and no errors result. The files in the [`contrib`](2.4.41/contrib) subdirectories ([`lib`](2.4.41/contrib/lib), [`config`](2.4.41/contrib/config)) are the result of this operation. These files can be re-created at any time by running the `deploydock/openldap-2441-centos7` image as `UID 0` and harvesting the resulting files in the container's `etc/openldap` and `var/lib/ldap` directories.
 
 This last approach is the approach that was finally able to create a valid OpenLDAP installation with a non-root user running the container.
